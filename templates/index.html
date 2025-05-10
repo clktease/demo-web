@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MP3 上傳下載</title>
+</head>
+<body>
+    <h1>上傳 MP3</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".mp3">
+        <button type="submit">上傳</button>
+    </form>
+
+    <h2>已上傳的檔案</h2>
+    <ul>
+        {% for file in files %}
+        <li><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        document.getElementById("uploadForm").onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+            location.reload();
+        }
+    </script>
+</body>
+</html>
